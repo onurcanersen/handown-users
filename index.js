@@ -25,11 +25,9 @@ app.get("/", (req, res) => {
 	});
 });
 
-app.delete("/", (req, res) => {
-	const user = req.body;
-	const id = user.id;
+app.delete("/:id", (req, res) => {
 	const sql = "DELETE FROM users WHERE id = ?";
-	con.query(sql, [id], (err, rows, fields) => {
+	con.query(sql, [req.params.id], (err, rows, fields) => {
 		if (!err) res.status(200).send("User deleted successfully");
 		else res.status(500).send(err);
 	});
