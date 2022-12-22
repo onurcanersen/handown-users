@@ -25,18 +25,28 @@ app.get("/", (req, res) => {
 	});
 });
 
+app.delete("/", (req, res) => {
+	const user = req.body;
+	const id = user.id;
+	const sql = "DELETE FROM users WHERE id = ?";
+	con.query(sql, [id], (err, rows, fields) => {
+		if (!err) res.status(200).send("User deleted successfully");
+		else res.status(500).send(err);
+	});
+});
+
 app.post("/signup", (req, res) => {
 	const user = req.body;
-	const user_email = user.user_email;
-	const user_name = user.user_name;
-	const user_surname = user.user_surname;
-	const user_password = user.user_password;
-	const user_type = user.user_type;
+	const email = user.email;
+	const name = user.name;
+	const surname = user.surname;
+	const password = user.password;
+	const type = user.type;
 	const sql =
-		"INSERT INTO users(user_email, user_name, user_surname, user_password, user_type) values(?, ?, ?, ?, ?)";
+		"INSERT INTO users(email, name, surname, password, type) values(?, ?, ?, ?, ?)";
 	con.query(
 		sql,
-		[user_email, user_name, user_surname, user_password, user_type],
+		[email, name, surname, password, type],
 		(err, rows, fields) => {
 			if (!err) res.status(200).send("User created successfully");
 			else res.status(500).send(err);
@@ -46,10 +56,10 @@ app.post("/signup", (req, res) => {
 
 app.post("/login", (req, res) => {
 	const user = req.body;
-	const user_email = user.user_email;
-	const user_password = user.user_password;
-	const sql = "SELECT * FROM users WHERE user_email = ? and user_password = ?";
-	con.query(sql, [user_email, user_password], (err, rows, fields) => {
+	const email = user.email;
+	const password = user.password;
+	const sql = "SELECT * FROM users WHERE email = ? and password = ?";
+	con.query(sql, [email, password], (err, rows, fields) => {
 		if (!err) {
 			if (rows && rows.length > 0) res.status(200).send(rows);
 			else res.status(200).send("Invalid email or password");
