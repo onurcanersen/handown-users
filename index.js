@@ -56,7 +56,7 @@ app.post("/login", (req, res) => {
 	const user = req.body;
 	const email = user.email;
 	const password = user.password;
-	const sql = "SELECT * FROM users WHERE email = ? and password = ?";
+	const sql = "SELECT * FROM users WHERE email = ? and password = ? LIMIT 1";
 	con.query(sql, [email, password], (err, rows, fields) => {
 		if (!err) {
 			if (rows && rows.length > 0) res.status(200).send(rows);
