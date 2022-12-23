@@ -60,7 +60,7 @@ app.post("/login", (req, res) => {
 	con.query(sql, [email, password], (err, rows, fields) => {
 		if (!err) {
 			if (rows && rows.length > 0) res.status(200).send(rows);
-			else res.status(200).send("Invalid email or password");
+			else res.status(401).send("Invalid email or password");
 		} else {
 			res.status(500).send(err);
 		}
