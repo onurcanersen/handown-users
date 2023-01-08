@@ -67,4 +67,20 @@ app.post("/login", (req, res) => {
 	});
 });
 
+app.post("/getID", (req, res) => {
+	const user = req.body;
+	const email = user.email;
+	const name = user.name;
+	const surname = user.surname;
+	const sql = "SELECT id FROM users WHERE email = ? and name = ? and surname = ? LIMIT 1";
+	con.query(sql, [email, name, surname], (err, rows, fields) => {
+		if (!err) {
+			if (rows && rows.length > 0) res.status(200).send(rows);
+			else res.status(401).send("No user");
+		} else {
+			res.status(500).send(err);
+		}
+	});
+});
+
 exports.users = app;
